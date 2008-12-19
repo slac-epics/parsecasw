@@ -7,7 +7,7 @@
 * in the file LICENSE that is included with this distribution. 
 \*************************************************************************/
 /*
- *      tsDLList.h,v 1.1.1.1 2004/05/24 19:08:15 evans Exp
+ *      $Id: tsDLList.h,v 1.1.1.1 2004/05/24 19:08:15 evans Exp $
  *
  *	type safe doubly linked list templates
  *
