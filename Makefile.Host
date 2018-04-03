@@ -15,7 +15,7 @@ include $(TOP)/config/CONFIG_EXTENSIONS
 ifdef WIN32
 #HOST_OPT = NO
 else
-HOST_OPT = NO
+#HOST_OPT = NO
 endif
 
 # Source browser options
@@ -66,30 +66,20 @@ PROD := parsecasw
 
 USR_INCLUDES = -I$(MOTIF_INC) -I$(X11_INC)
 
-USR_LIBS_DEFAULT = caObject2 ca Com Xm Xt Xmu X11
-USR_LIBS_Linux = caObject2 ca Com Xm Xt Xp Xmu X11
-USR_LIBS_WIN32 = caObject2 ca Com $(EXCEED_XLIBS)
+USR_LIBS_DEFAULT = Com
+USR_LIBS_Linux = Com
+USR_LIBS_WIN32 = Com
 
 # For SciPlot
 USR_CFLAGS += -DMOTIF
 USR_CXXFLAGS += -DMOTIF
-
-USR_CFLAGS_WIN32 += $(EXCEED_CFLAGS)
-USR_CXXFLAGS_WIN32 += $(EXCEED_CFLAGS)
 
 WIN32_RUNTIME=MD
 USR_CFLAGS_WIN32 += /DWIN32 /D_CONSOLE
 USR_CXXFLAGS_WIN32 += /DWIN32 /D_CONSOLE
 USR_LDFLAGS_WIN32 += /SUBSYSTEM:CONSOLE
 
-caObject2_DIR = $(INSTALL_LIB)
-ca_DIR = $(EPICS_BASE_LIB)
 Com_DIR = $(EPICS_BASE_LIB)
-Xm_DIR = $(MOTIF_LIB)
-Xt_DIR = $(X11_LIB)
-Xp_DIR = $(MOTIF_LIB)
-Xmu_DIR = $(X11_LIB)
-X11_DIR = $(X11_LIB)
 
 parsecasw_SRCS += parsecasw.cpp
 parsecasw_SRCS += CIoc.cpp

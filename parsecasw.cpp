@@ -409,6 +409,9 @@ static int parseCommand(int argc, char **argv)
 	    case 'v':
 		verbose=1;
 		break;
+	    case 'V':
+		printf("Version: %s\n",PARSECASW_VERSION_STRING);
+		exit(0);
 	    case 't':
 		terse=1;
 		break;
@@ -448,6 +451,8 @@ static void usage(void)
       "  Parses CASW output and divides it into groups of beacon anomalies.\n"
       "  Reads from stdin if no filename is specified.\n"
       "\n"
+      "  Version: %s\n"
+      "\n"
       "  Options (First character is sufficient):\n"
       "    -help        This message.  Use with -v for more information.\n"
       "    -echo        Echo input lines\n"
@@ -459,9 +464,10 @@ static void usage(void)
 #endif
       "    -server      Sort by server (Default is by group)\n"
       "    -terse       Terse output (Default is between terse and verbose)\n"
+      "    -Version     Print the version\n"
       "    -verbose     Verbose output.  When used with -h produces more\n"
       "                 extensive help information.\n"
-	,TIMER_INTERVAL);
+	,PARSECASW_VERSION_STRING,TIMER_INTERVAL);
 
     if(verbose) {
 	int nLines=sizeof(helpTxt)/sizeof(char *);

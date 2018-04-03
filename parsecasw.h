@@ -49,6 +49,8 @@
 #include <epicsTime.h>
 #include <epicsTimer.h>
 
+#include "parsecaswVersion.h"
+
 class CParseTimer;
 
 class CParseTimer : public epicsTimerNotify
