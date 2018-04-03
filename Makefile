@@ -8,7 +8,7 @@
 #*************************************************************************
 # Makefile for parsecasw
 
-TOP = ../..
+TOP = .
 include $(TOP)/configure/CONFIG
 
 # Optimization
@@ -90,6 +90,7 @@ parsecasw_SRCS += utils.cpp
 RCS_WIN32 += parsecasw.rc
 
 include $(TOP)/configure/RULES
+include $(TOP)/configure/RULES_TOP
 
 parsecasw.res:../parsecasw.ico
 
