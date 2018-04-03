@@ -1,0 +1,24 @@
+#!/bin/sh
+# The next line restarts using tclsh since sh ignores the backslash \
+exec oagtclsh "$0" "$@"
+
+set default "casw.051804.txt"
+
+if {!$argc} {
+    set filename $default
+} else {
+    set filename [lindex $argv 0]
+}
+
+set f [open $filename]
+
+while {[gets $f line] >= 0} {
+    after 200
+    puts $line
+}
+close $f
+
+# **************************** Emacs Editing Sequences *****************
+# Local Variables:
+# mode: tcl
+# End:

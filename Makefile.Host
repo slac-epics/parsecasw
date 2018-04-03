@@ -1,0 +1,117 @@
+#*************************************************************************
+# Copyright (c) 2002 The University of Chicago, as Operator of Argonne
+# National Laboratory.
+# Copyright (c) 2002 The Regents of the University of California, as
+# Operator of Los Alamos National Laboratory.
+# This file is distributed subject to a Software License Agreement found
+# in the file LICENSE that is included with this distribution. 
+#*************************************************************************
+# Makefile.Host for parsecasw
+
+TOP = ../../..
+include $(TOP)/config/CONFIG_EXTENSIONS
+
+# Optimization
+ifdef WIN32
+#HOST_OPT = NO
+else
+HOST_OPT = NO
+endif
+
+# Source browser options
+ifeq ($(HOST_OPT),NO)
+  ifeq ($(ANSI),ACC)
+    ifeq ($(OS_CLASS),solaris)
+      USR_CFLAGS += -xsb
+    endif
+  endif
+endif
+
+# Eliminate warnings for deprecated conversion from string constant to
+# char *
+G++_WARN_YES:=$(subst -Wwrite-strings,,$(G++_WARN_YES))
+
+# Sun compatibility
+#USR_CXXFLAGS_solaris+=-compat=4
+# Needed for Motif functions using string literals for char * arguments
+# Weaker than -compat=4
+ifeq ($(ANSI),ACC)
+USR_CXXFLAGS_solaris+=-features=no%conststrings
+endif
+
+#EPICS_BASE = /home/phoebus/EVANS/epics/baseLatest
+
+# Kludge to avoid compiler warning for -I with nothing after
+# (We don't need to include anything from base)
+#EPICS_BASE_INCLUDE = .
+
+#STATIC_BUILD = YES 
+CMPLR = STRICT
+CXXCMPLR = STRICT
+
+# Purify
+ifeq ($(OS_CLASS),solaris)
+#PURIFY=YES
+PURIFY_FLAGS = -first-only -chain-length=26
+#PURIFY_FLAGS = -first-only -chain-length=26 -max_threads=256
+#PURIFY_FLAGS = -first-only -chain-length=26 -always-use-cache-dir -cache-dir=/tmp/purifycache
+#PURIFY_FLAGS = -first-only -chain-length=26 -enable-new-cache-scheme
+#PURIFY_FLAGS = -first-only -chain-length=26 -enable-new-cache-scheme -always-use-cache-dir -cache-dir=/tmp/purifycache
+
+# Put the cache files in the appropriate bin directory
+PURIFY_FLAGS += -always-use-cache-dir -cache-dir=$(shell $(PERL) $(TOP)/config/fullPathName.pl .)
+endif
+
+PROD := parsecasw
+
+USR_INCLUDES = -I$(MOTIF_INC) -I$(X11_INC)
+
+USR_LIBS_DEFAULT = caObject2 ca Com Xm Xt Xmu X11
+USR_LIBS_Linux = caObject2 ca Com Xm Xt Xp Xmu X11
+USR_LIBS_WIN32 = caObject2 ca Com $(EXCEED_XLIBS)
+
+# For SciPlot
+USR_CFLAGS += -DMOTIF
+USR_CXXFLAGS += -DMOTIF
+
+USR_CFLAGS_WIN32 += $(EXCEED_CFLAGS)
+USR_CXXFLAGS_WIN32 += $(EXCEED_CFLAGS)
+
+WIN32_RUNTIME=MD
+USR_CFLAGS_WIN32 += /DWIN32 /D_CONSOLE
+USR_CXXFLAGS_WIN32 += /DWIN32 /D_CONSOLE
+USR_LDFLAGS_WIN32 += /SUBSYSTEM:CONSOLE
+
+caObject2_DIR = $(INSTALL_LIB)
+ca_DIR = $(EPICS_BASE_LIB)
+Com_DIR = $(EPICS_BASE_LIB)
+Xm_DIR = $(MOTIF_LIB)
+Xt_DIR = $(X11_LIB)
+Xp_DIR = $(MOTIF_LIB)
+Xmu_DIR = $(X11_LIB)
+X11_DIR = $(X11_LIB)
+
+parsecasw_SRCS += parsecasw.cpp
+parsecasw_SRCS += CIoc.cpp
+parsecasw_SRCS += utils.cpp
+
+RCS_WIN32 += parsecasw.rc
+
+include $(TOP)/config/RULES.Host
+
+parsecasw.res:../parsecasw.ico
+
+# Make all sources depend on specified headers
+parsecasw$(OBJ) : ../parsecasw.h ../CIoc.h ../utils.h ../help.txt
+CIoc$(OBJ) : ../CIoc.h ../utils.h
+utils$(OBJ) : ../utils.h
+
+xxxx:
+	@echo $(addsuffix $(OBJ), $(basename $(SRCS)))
+	@echo $(OBJ)
+	@echo parsecasw$(OBJ)
+
+# **************************** Emacs Editing Sequences *****************
+# Local Variables:
+# mode: makefile
+# End:
